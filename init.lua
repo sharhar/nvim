@@ -1,5 +1,6 @@
 vim.g.mapleader = ' '
 vim.g.maplocalleader = ' '
+vim.cmd([[ let g:neo_tree_remove_legacy_commands = 1 ]])
 
 local my_theme = 'onedark'
 
@@ -72,7 +73,7 @@ require('lazy').setup({
       },
     },
   },
-  
+
   'Mofiqul/vscode.nvim',
 
   { -- Add indentation guides even on blank lines
@@ -86,7 +87,9 @@ require('lazy').setup({
   -- "gc" to comment visual regions/lines
   { 'numToStr/Comment.nvim', opts = {} },
 
-  -- Fuzzy Finder (files, lsp, etc)
+  'morhetz/gruvbox',
+
+    -- Fuzzy Finder (files, lsp, etc)
   { 'nvim-telescope/telescope.nvim', version = '*', dependencies = { 'nvim-lua/plenary.nvim' } },
 
   -- Fuzzy Finder Algorithm which requires local dependencies to be built.
@@ -120,6 +123,20 @@ require('lazy').setup({
     config = function()
         require("rose-pine").setup()
     end
+  },
+
+  "nvim-lua/plenary.nvim",
+  "nvim-tree/nvim-web-devicons", -- not strictly required, but recommended
+  "MunifTanjim/nui.nvim",
+
+  {
+    "nvim-neo-tree/neo-tree.nvim",
+    branch = "v2.x", opts={
+      window = {
+          position = "left",
+          width = 25
+      }
+    }
   }
 }, {})
 
@@ -129,11 +146,13 @@ vim.cmd("colorscheme " .. my_theme)
 vim.o.hlsearch = false
 vim.o.incsearch = true
 
-vim.wo.number = true
+vim.o.number = true
 vim.o.relativenumber = true
 
+vim.o.scrolloff = 8
+
 -- Enable mouse mode
-vim.o.mouse = 'a'
+vim.o.mouse = ''
 
 -- Enable break indent
 vim.o.breakindent = true
@@ -161,6 +180,11 @@ vim.o.completeopt = 'menuone,noselect'
 -- Keymaps for better default experience
 -- See `:help vim.keymap.set()`
 vim.keymap.set({ 'n', 'v' }, '<Space>', '<Nop>', { silent = true })
+
+-- Alter terminal behavior
+vim.cmd("set shell=/bin/zsh")
+vim.keymap.set('t', '<Esc>', '<C-\\><C-n>')
+vim.keymap.set('t', '<C-w>', '<C-\\><C-n><C-w>')
 
 -- Remap for dealing with word wrap
 vim.keymap.set('n', 'k', "v:count == 0 ? 'gk' : 'k'", { expr = true, silent = true })
@@ -209,6 +233,24 @@ vim.keymap.set('n', '<leader>sh', require('telescope.builtin').help_tags, { desc
 vim.keymap.set('n', '<leader>sw', require('telescope.builtin').grep_string, { desc = '[S]earch current [W]ord' })
 vim.keymap.set('n', '<leader>sg', require('telescope.builtin').live_grep, { desc = '[S]earch by [G]rep' })
 vim.keymap.set('n', '<leader>sd', require('telescope.builtin').diagnostics, { desc = '[S]earch [D]iagnostics' })
+
+local function openSmallTerminalBelow()
+  vim.cmd("below new")
+  vim.cmd("8 wincmd _")
+  vim.cmd("terminal")
+  vim.cmd("wincmd p")
+end
+
+vim.keymap.set('n', '<leader>ot', openSmallTerminalBelow, {desc = '[O]pen [T]erminal'})
+
+vim.keymap.set('n', '<leader>of', function ()
+  vim.cmd(":Neotree filesystem reveal left")
+end, {desc = '[O]pen [F]ile Viewer'})
+
+vim.keymap.set('n', '<leader>ow', function ()
+  vim.cmd(":Neotree filesystem reveal left")
+  openSmallTerminalBelow()
+end, {desc = '[O]pen [W]orkspace'})
 
 -- [[ Configure Treesitter ]]
 -- See `:help nvim-treesitter`
@@ -330,7 +372,7 @@ end
 -- Enable the following language servers
 local servers = {
   clangd = {},
-  pyright = {},
+  -- pyright = {},
   rust_analyzer = {},
 
   lua_ls = {
