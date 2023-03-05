@@ -69,7 +69,6 @@ require('lazy').setup({
     opts = {
       options = {
         icons_enabled = true,
-        theme = my_theme,
       },
     },
   },
@@ -140,7 +139,6 @@ require('lazy').setup({
   }
 }, {})
 
-vim.cmd("colorscheme " .. my_theme)
 
 -- [[ Setting options ]]
 vim.o.hlsearch = false
@@ -206,6 +204,9 @@ vim.api.nvim_create_autocmd('TextYankPost', {
 require('telescope').setup {
   defaults = {
     mappings = {
+      n = {
+        ['dd'] = require('telescope.actions').delete_buffer
+      },
       i = {
         ['<C-u>'] = false,
         ['<C-d>'] = false,
@@ -234,6 +235,17 @@ vim.keymap.set('n', '<leader>sw', require('telescope.builtin').grep_string, { de
 vim.keymap.set('n', '<leader>sg', require('telescope.builtin').live_grep, { desc = '[S]earch by [G]rep' })
 vim.keymap.set('n', '<leader>sd', require('telescope.builtin').diagnostics, { desc = '[S]earch [D]iagnostics' })
 
+function SetTheme(theme)
+	vim.cmd.colorscheme(theme)
+  require('lualine').setup({
+    options = {
+      theme = theme
+    }
+  })
+end
+
+SetTheme(my_theme)
+
 local function openSmallTerminalBelow()
   vim.cmd("below new")
   vim.cmd("8 wincmd _")
@@ -241,16 +253,16 @@ local function openSmallTerminalBelow()
   vim.cmd("wincmd p")
 end
 
-vim.keymap.set('n', '<leader>ot', openSmallTerminalBelow, {desc = '[O]pen [T]erminal'})
+vim.keymap.set('n', '<leader>to', openSmallTerminalBelow, {desc = '[T]erminal [O]pen'})
 
-vim.keymap.set('n', '<leader>of', function ()
+vim.keymap.set('n', '<leader>fo', function ()
   vim.cmd(":Neotree filesystem reveal left")
-end, {desc = '[O]pen [F]ile Viewer'})
+end, {desc = '[F]ile Viewer [O]pen'})
 
-vim.keymap.set('n', '<leader>ow', function ()
+vim.keymap.set('n', '<leader>wo', function ()
   vim.cmd(":Neotree filesystem reveal left")
   openSmallTerminalBelow()
-end, {desc = '[O]pen [W]orkspace'})
+end, {desc = '[W]orkspace [O]pen'})
 
 -- [[ Configure Treesitter ]]
 -- See `:help nvim-treesitter`
