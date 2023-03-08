@@ -134,6 +134,13 @@ require('lazy').setup({
       window = {
           position = "left",
           width = 25
+      },
+      filesystem = {
+        filtered_items = {
+            hide_dotfiles = false,
+            hide_gitignored = false,
+            hide_hidden = false,
+        }
       }
     }
   }
@@ -180,7 +187,7 @@ vim.o.completeopt = 'menuone,noselect'
 vim.keymap.set({ 'n', 'v' }, '<Space>', '<Nop>', { silent = true })
 
 -- Alter terminal behavior
-vim.cmd("set shell=/bin/zsh")
+vim.cmd("set shell=/home/shahar/.bin/bin/fish")
 vim.keymap.set('t', '<Esc>', '<C-\\><C-n>')
 vim.keymap.set('t', '<C-w>', '<C-\\><C-n><C-w>')
 
