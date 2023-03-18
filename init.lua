@@ -187,7 +187,7 @@ vim.o.completeopt = 'menuone,noselect'
 vim.keymap.set({ 'n', 'v' }, '<Space>', '<Nop>', { silent = true })
 
 -- Alter terminal behavior
-vim.cmd("set shell=/home/shahar/.local/bin/fish")
+vim.cmd("set shell=$HOME/.local/bin/fish")
 vim.keymap.set('t', '<Esc>', '<C-\\><C-n>')
 vim.keymap.set('t', '<C-w>', '<C-\\><C-n><C-w>')
 
