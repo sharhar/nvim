@@ -143,7 +143,9 @@ require('lazy').setup({
         }
       }
     }
-  }
+  },
+
+  "tikhomirov/vim-glsl"
 }, {})
 
 
@@ -187,7 +189,8 @@ vim.o.completeopt = 'menuone,noselect'
 vim.keymap.set({ 'n', 'v' }, '<Space>', '<Nop>', { silent = true })
 
 -- Alter terminal behavior
-vim.cmd("set shell=$HOME/.local/bin/fish")
+vim.cmd("set shell=/usr/bin/fish")
+vim.keymap.set('n', '<Tab>', '<C-w>')
 vim.keymap.set('t', '<Esc>', '<C-\\><C-n>')
 vim.keymap.set('t', '<C-w>', '<C-\\><C-n><C-w>')
 
@@ -392,7 +395,7 @@ end
 local servers = {
   clangd = {},
   -- pyright = {},
-  rust_analyzer = {},
+  -- rust_analyzer = {},
 
   lua_ls = {
     Lua = {
